@@ -2,45 +2,69 @@
 
 namespace App\Entity;
 
-use App\Repository\ContactRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
+use App\Repository\ContactRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
- * @ORM\Entity(repositoryClass=ContactRepository::class)
+ * @ApiResource(
+   
+ * )
+ * @ORM\Entity(repositoryClass="App\Repository\ContactRepository")
  */
+
+
 class Contact
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("contact:read")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=255)
+     *  @Groups("contact:read")
+     * @Assert\NotBlank
+     * @Assert\Length(min=4)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=150)
+     *  @Groups("contact:read")
+     *  @Assert\NotBlank
+     * @Assert\Length(min=4)
      */
-    private $phone;
+    private $mail;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $email;
-
-    /**
-     * @ORM\Column(type="string", length=200)
+     * @ORM\Column(type="string", length=150, nullable=true)
+     *  @Groups("contact:read")
+     *  @Assert\NotBlank
+     * @Assert\Length(min=4)
      */
     private $subject;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", )
+     *  @Groups("contact:read")
+     *  @Assert\NotBlank
+     * @Assert\Length(min=4)
      */
     private $message;
+
+     /**
+     * @ORM\Column(type="datetime")
+     *  @Groups("contact:read")
+     */
+    private $date;
 
     public function getId(): ?int
     {
@@ -59,26 +83,14 @@ class Contact
         return $this;
     }
 
-    public function getPhone(): ?int
+    public function getMail(): ?string
     {
-        return $this->phone;
+        return $this->mail;
     }
 
-    public function setPhone(?int $phone): self
+    public function setMail(string $mail): self
     {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
+        $this->mail = $mail;
 
         return $this;
     }
@@ -88,7 +100,7 @@ class Contact
         return $this->subject;
     }
 
-    public function setSubject(string $subject): self
+    public function setSubject(?string $subject): self
     {
         $this->subject = $subject;
 
@@ -103,6 +115,17 @@ class Contact
     public function setMessage(string $message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }
