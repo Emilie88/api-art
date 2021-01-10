@@ -18,11 +18,13 @@ class ContactController extends AbstractController
 {
    
     /**
-     * @Route("api/contact", name="api_contact_index",methods={"GET"})
+     * @Route("api/contacts", name="api_contact_index",methods={"GET"})
      */
-    public function index(ContactRepository $contactRepository)
+    public function index(ContactRepository $contactRepository,Request $request)
     {
         $contacts = $contactRepository->findAll();
+        $jsonRecu = $request->getContent();
+        dd( $jsonRecu);
 
         // $json = $serializer->serialize($contacts,'json',['groups'=>'contact:read']);
         // $response= new Response($json,200,[
@@ -35,12 +37,14 @@ class ContactController extends AbstractController
     }
 
     /**
-     * @Route("api/contact", name="api_contact_create",methods={"POST"})
+     * @Route("api/contacts", name="api_contact_create",methods={"POST"})
      */
     public function create(Request $request,SerializerInterface $serializer,EntityManagerInterface $em,
     ValidatorInterface $validator){
+      
        try{
         $jsonRecu = $request->getContent();
+        dd( $jsonRecu);
         $contact = $serializer->deserialize($jsonRecu,Contact::class,'json');
         $contact->setDate(new\DateTime());
         $errors = $validator->validate( $contact);

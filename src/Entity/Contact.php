@@ -45,7 +45,7 @@ class Contact
     private $mail;
 
     /**
-     * @ORM\Column(type="string", length=150, nullable=true)
+     * @ORM\Column(type="string", length=150)
      *  @Groups("contact:read")
      *  @Assert\NotBlank
      * @Assert\Length(min=4)
@@ -53,7 +53,7 @@ class Contact
     private $subject;
 
     /**
-     * @ORM\Column(type="text", )
+     * @ORM\Column(type="text" )
      *  @Groups("contact:read")
      *  @Assert\NotBlank
      * @Assert\Length(min=4)
