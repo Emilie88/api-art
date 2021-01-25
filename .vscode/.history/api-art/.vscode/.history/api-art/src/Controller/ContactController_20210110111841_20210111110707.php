@@ -6,7 +6,9 @@ use App\Entity\Contact;
 use App\Repository\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,16 +24,14 @@ class ContactController extends AbstractController
     {
         $contacts = $contactRepository->findAll();
         $jsonRecu = $request->getContent();
-        
+        dd( $jsonRecu);
 
         // $json = $serializer->serialize($contacts,'json',['groups'=>'contact:read']);
         // $response= new Response($json,200,[
         //     "Content-Type"=>"application/json"
         // ]);
         // $response = new JsonResponse($json,200,[],true);
-
         $response = $this->json($contacts,200,[],['groups'=>'contact:read']);
-       
 
         return $response;
     }
@@ -44,6 +44,7 @@ class ContactController extends AbstractController
       
        try{
         $jsonRecu = $request->getContent();
+        dd( $jsonRecu);
         $contact = $serializer->deserialize($jsonRecu,Contact::class,'json');
         $contact->setDate(new\DateTime());
         $errors = $validator->validate( $contact);

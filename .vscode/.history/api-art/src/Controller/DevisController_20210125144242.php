@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Contact;
-use App\Repository\ContactRepository;
+use App\Entity\Devis;
+use App\Repository\DevisRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,32 +12,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
-class ContactController extends AbstractController
+class DevisController extends AbstractController
 {
    
     /**
-     * @Route("api/contacts", name="api_contact_index",methods={"GET"})
+     * @Route("api/devis", name="api_devis_index",methods={"GET"})
      */
-    public function index(ContactRepository $contactRepository,Request $request)
+    public function index(DevisRepository $devisRepository,Request $request)
     {
-        $contacts = $contactRepository->findAll();
+        $devis = $devisRepository->findAll();
         $jsonRecu = $request->getContent();
         
-
-        // $json = $serializer->serialize($contacts,'json',['groups'=>'contact:read']);
-        // $response= new Response($json,200,[
-        //     "Content-Type"=>"application/json"
-        // ]);
-        // $response = new JsonResponse($json,200,[],true);
-
-        $response = $this->json($contacts,200,[],['groups'=>'contact:read']);
+        $response = $this->json($devis,200,[],['groups'=>'devis:read']);
        
+       
+        
 
         return $response;
     }
 
     /**
-     * @Route("api/contacts", name="api_contact_create",methods={"POST"})
+     * @Route("api/devis", name="api_devis_create",methods={"POST"})
      */
     public function create(Request $request,SerializerInterface $serializer,EntityManagerInterface $em,
     ValidatorInterface $validator){
@@ -45,7 +40,7 @@ class ContactController extends AbstractController
        try{
         $jsonRecu = $request->getContent();
         $contact = $serializer->deserialize($jsonRecu,Contact::class,'json');
-        $contact->setDate(new\DateTime());
+        // $contact->setDate(new\DateTime());
         $errors = $validator->validate( $contact);
         if(count($errors) > 0){
             return $this->json($errors,400);
@@ -53,7 +48,7 @@ class ContactController extends AbstractController
         $em->persist($contact);
         $em->flush();
 
-       return $this->json($contact, 201,[],['groups'=>'contact:read']);
+       return $this->json($contact, 201,[],['groups'=>'devis:read']);
        }catch(NotEncodableValueException $e){
            return $this->json([
                'status'=>400,

@@ -29,9 +29,7 @@ class ContactController extends AbstractController
         //     "Content-Type"=>"application/json"
         // ]);
         // $response = new JsonResponse($json,200,[],true);
-
         $response = $this->json($contacts,200,[],['groups'=>'contact:read']);
-       
 
         return $response;
     }
@@ -45,7 +43,7 @@ class ContactController extends AbstractController
        try{
         $jsonRecu = $request->getContent();
         $contact = $serializer->deserialize($jsonRecu,Contact::class,'json');
-        $contact->setDate(new\DateTime());
+        // $contact->setDate(new\DateTime());
         $errors = $validator->validate( $contact);
         if(count($errors) > 0){
             return $this->json($errors,400);

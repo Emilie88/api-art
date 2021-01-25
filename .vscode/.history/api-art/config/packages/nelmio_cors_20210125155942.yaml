@@ -1,4 +1,4 @@
-nelmio_cors:
+elmio_cors:
     defaults:
         origin_regex: true
         allow_origin: ['*']

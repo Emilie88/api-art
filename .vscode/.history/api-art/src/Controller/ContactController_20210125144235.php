@@ -45,7 +45,7 @@ class ContactController extends AbstractController
        try{
         $jsonRecu = $request->getContent();
         $contact = $serializer->deserialize($jsonRecu,Contact::class,'json');
-        $contact->setDate(new\DateTime());
+        // $contact->setDate(new\DateTime());
         $errors = $validator->validate( $contact);
         if(count($errors) > 0){
             return $this->json($errors,400);

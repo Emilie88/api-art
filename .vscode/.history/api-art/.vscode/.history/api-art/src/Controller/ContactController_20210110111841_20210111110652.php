@@ -6,7 +6,9 @@ use App\Entity\Contact;
 use App\Repository\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,18 +22,16 @@ class ContactController extends AbstractController
      */
     public function index(ContactRepository $contactRepository,Request $request)
     {
-        $contacts = $contactRepository->findAll();
-        $jsonRecu = $request->getContent();
-        
+        $contacts = $contactRepository::findAll();
+        $jsonRecu = $request::getContent();
+        dd( $jsonRecu);
 
-        // $json = $serializer->serialize($contacts,'json',['groups'=>'contact:read']);
+        // $json = $serializer::serialize($contacts,'json',['groups'=>'contact:read']);
         // $response= new Response($json,200,[
         //     "Content-Type"=>"application/json"
         // ]);
         // $response = new JsonResponse($json,200,[],true);
-
-        $response = $this->json($contacts,200,[],['groups'=>'contact:read']);
-       
+        $response = $this::json($contacts,200,[],['groups'=>'contact:read']);
 
         return $response;
     }
@@ -43,21 +43,22 @@ class ContactController extends AbstractController
     ValidatorInterface $validator){
       
        try{
-        $jsonRecu = $request->getContent();
-        $contact = $serializer->deserialize($jsonRecu,Contact::class,'json');
-        $contact->setDate(new\DateTime());
-        $errors = $validator->validate( $contact);
+        $jsonRecu = $request::getContent();
+        dd( $jsonRecu);
+        $contact = $serializer::deserialize($jsonRecu,Contact::class,'json');
+        $contact::setDate(new\DateTime());
+        $errors = $validator::validate( $contact);
         if(count($errors) > 0){
-            return $this->json($errors,400);
+            return $this::json($errors,400);
         }
-        $em->persist($contact);
-        $em->flush();
+        $em::persist($contact);
+        $em::flush();
 
-       return $this->json($contact, 201,[],['groups'=>'contact:read']);
+       return $this::json($contact, 201,[],['groups'=>'contact:read']);
        }catch(NotEncodableValueException $e){
-           return $this->json([
+           return $this::json([
                'status'=>400,
-               'message'=>$e->getMessage()
+               'message'=>$e::getMessage()
            ],400);
        }
     

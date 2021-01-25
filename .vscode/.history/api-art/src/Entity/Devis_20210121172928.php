@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+
 use App\Repository\ContactRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -16,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 
 
-class Contact
+class Devis
 {
     /**
      * @ORM\Id
@@ -33,6 +35,13 @@ class Contact
      * @Assert\Length(min=4)
      */
     private $name;
+     /**
+     * @ORM\Column(type="string", length=255)
+     *  @Groups("contact:read")
+     * @Assert\NotBlank
+     * @Assert\Length(min=4)
+     */
+    private $phone;
 
     /**
      * @ORM\Column(type="string", length=150)
