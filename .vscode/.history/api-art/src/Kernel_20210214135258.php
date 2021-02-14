@@ -38,7 +38,15 @@ class Kernel extends BaseKernel
         
     }
 
-   
+    public function registerBundles()
+    {
+        $bundles = [
+          
+            new  Symfony\Nelmio\CorsBundle\NelmioCorsBundle
+            
+        ];
+       return $bundles;
+    }
 
      
 

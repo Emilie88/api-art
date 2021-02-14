@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Entity;
+
 
 
 use App\Repository\UserRepository;
@@ -72,7 +74,10 @@ class User implements UserInterface
      *  @ORM\OneToMany(targetEntity=Comment::class, mappedBy="owner",cascade={"persist"})
      */
     private $commentsList;
-    
+    /**
+     *  @ORM\Column(type="string", unique=true, nullable=true)
+     */
+    private $apiToken;
 
     
     public function __construct()
@@ -219,9 +224,17 @@ class User implements UserInterface
         return $this;
     }
 
-   
+    public function getApiToken(): ?string
+    {
+        return $this->apiToken;
+    }
 
-   
+    public function setApiToken(string $apiToken): self
+    {
+        $this->apiToken = $apiToken;
+
+        return $this;
+    }
 
     // public function getPlainPassword(): ?string
     // {

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Entity;
+
 
 
 use App\Repository\UserRepository;
@@ -45,7 +47,7 @@ class User implements UserInterface
     
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Groups("user:write")
+     
      */
     private $password;
 
@@ -72,9 +74,22 @@ class User implements UserInterface
      *  @ORM\OneToMany(targetEntity=Comment::class, mappedBy="owner",cascade={"persist"})
      */
     private $commentsList;
-    
 
-    
+    /**
+     *  @ORM\Column(type="string", unique=true, nullable=true)
+     */
+    private $apiToken;
+
+     /**
+     * @Groups("user:write")
+     *
+     * @SerializedName("password")
+     */
+    private $plainPassword;
+
+     
+
+
     public function __construct()
     {
         $this->commentsList = new ArrayCollection();
@@ -162,7 +177,7 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getFirstname(): ?string
@@ -219,21 +234,29 @@ class User implements UserInterface
         return $this;
     }
 
-   
+    public function getApiToken(): ?string
+    {
+        return $this->apiToken;
+    }
 
-   
+    public function setApiToken(string $apiToken): self
+    {
+        $this->apiToken = $apiToken;
 
-    // public function getPlainPassword(): ?string
-    // {
-    //     return $this->plainPassword;
-    // }
+        return $this;
+    }
 
-    // public function setPlainPassword(string $plainPassword): self
-    // {
-    //     $this->plainPassword = $plainPassword;
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
 
-    //     return $this;
-    // }
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
 
 
 }

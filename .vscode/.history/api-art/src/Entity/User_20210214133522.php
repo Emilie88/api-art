@@ -1,5 +1,8 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+
 namespace App\Entity;
+
 
 
 use App\Repository\UserRepository;
